@@ -11,3 +11,8 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+
+# Specific files
+allcancers.RData
+start.R
+.RData
