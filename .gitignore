@@ -16,3 +16,4 @@ vignettes/*.pdf
 allcancers.RData
 start.R
 .RData
+.Rproj.user

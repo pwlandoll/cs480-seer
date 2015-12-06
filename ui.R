@@ -3,7 +3,7 @@ library(shiny)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Hello Shiny!"),
+  titlePanel("SEER Cancer Data"),
   
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
