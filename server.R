@@ -1,19 +1,27 @@
 library(shiny)
+library(googleVis)
 
-shinyServer(function(input, output) {
+load("allcancers.RData")
+cancerNames = names(cancer)
+
+shinyServer(function(input, output, session) {
   
-  # Expression that generates a histogram. The expression is
-  # wrapped in a call to renderPlot to indicate that:
-  #
-  #  1) It is "reactive" and therefore should re-execute automatically
-  #     when inputs change
-  #  2) Its output type is a plot
+  # Dynamic loading of the data axes.
+  updateSelectInput(session, "dataSelectX", choices = cancerNames, selected = cancerNames[2])
+  updateSelectInput(session, "dataSelectY", choices = cancerNames, selected = cancerNames[3])
   
-  output$distPlot <- renderPlot({
-    x    <- faithful[, 2]  # Old Faithful Geyser data
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  # Track changes to the selected x and y columns.
+  reactX <- reactive({
+    input$dataSelectX
   })
+  
+  reactY <- reactive({
+    input$dataSelectY
+  })
+  
+  # Output a GoogleVIS plot to the client.
+  output$gvisPlot <- renderGvis({
+    gvisScatterChart(cancer[,c(reactX(), reactY())])
+  })
+  
 })

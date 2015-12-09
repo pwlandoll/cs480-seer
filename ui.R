@@ -7,17 +7,14 @@ shinyUI(fluidPage(
   
   # Sidebar with a slider input for the number of bins
   sidebarLayout(
-    sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+    sidebarPanel(      
+      selectInput("dataSelectX", label = "X Axis", choices = c()),
+      selectInput("dataSelectY", label = "Y Axis", choices = c())
     ),
     
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      htmlOutput("gvisPlot")
     )
   )
 ))
