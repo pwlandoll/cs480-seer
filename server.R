@@ -17,7 +17,10 @@ shinyServer(function(input, output) {
       # Aggregate the data.
       dataAggregate = aggregate(formula, preprocessedData, input$aggregateFunction)
       # Display the data.
-      gvisColumnChart(dataAggregate, input$graphX, input$graphY) 
+       gvisColumnChart(dataAggregate, input$graphX, input$graphY, options = list(title = 
+                                                                                 (paste(input$graphX, 
+                                                                                       " VS ", 
+                                                                                       input$graphY)))
     }
   })
 
