@@ -1,5 +1,6 @@
-library(shiny)
 library(googleVis)
+library(plyr)
+library(shiny)
 
 load("colon.R")
 

@@ -32,6 +32,8 @@ shinyUI(fluidPage(
                                                "Count" = "length",
                                                "Standard Deviation" = "sd"))),
       conditionalPanel("input.graphType == 'pie'",
+                       # Variable data for pie chart
+                       # Requires string values to be counted
                        selectInput("var", "Variable",
                                    choices = c("Sex" = "sex",
                                                "Cancer Registry" = "reg",
