@@ -1,19 +1,22 @@
 library(shiny)
+library(googleVis)
+
+load("colon.R")
+
+# Exclude records with unknown CSSize values.
+preprocessedData = subset(colon, cssize < 999)
 
 shinyServer(function(input, output) {
   
-  # Expression that generates a histogram. The expression is
-  # wrapped in a call to renderPlot to indicate that:
-  #
-  #  1) It is "reactive" and therefore should re-execute automatically
-  #     when inputs change
-  #  2) Its output type is a plot
-  
-  output$distPlot <- renderPlot({
-    x    <- faithful[, 2]  # Old Faithful Geyser data
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
-    
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  output$googleBarChart = renderGvis({
+    # Make sure the input strings actually have values in them.
+    if (is.character(input$graphX) && is.character(input$graphY) && is.character(input$aggregateFunction)) {
+      # Concatenate strings to make an aggregation formula.
+      formula = as.formula(paste(input$graphY, " ~ ", input$graphX))
+      # Aggregate the data.
+      dataAggregate = aggregate(formula, preprocessedData, input$aggregateFunction)
+      # Display the data.
+      gvisColumnChart(dataAggregate, input$graphX, input$graphY) 
+    }
   })
 })
