@@ -24,7 +24,7 @@ shinyServer(function(input, output) {
   output$googlePieChart = renderGvis({
     if (is.character(input$var)) {
      dataCount = count(preprocessedData, vars = input$var)
-     gvisPieChart(dataCount, labelvar = input$var, numvar = "freq")
+     gvisPieChart(dataCount, labelvar = input$var, numvar = "freq", options = list(title = input$var))
     }
   })
   
