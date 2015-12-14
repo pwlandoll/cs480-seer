@@ -19,4 +19,12 @@ shinyServer(function(input, output) {
       gvisColumnChart(dataAggregate, input$graphX, input$graphY) 
     }
   })
+
+  output$googlePieChart = renderGvis({
+    if (is.character(input$var)) {
+     dataCount = count(preprocessedData, vars = input$var)
+     gvisPieChart(dataCount, labelvar = input$var, numvar = "freq")
+    }
+  })
+  
 })

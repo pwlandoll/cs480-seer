@@ -9,7 +9,8 @@ shinyUI(fluidPage(
   sidebarLayout(
     sidebarPanel(
       selectInput("graphType", "Choose a graph type",
-                  choices = c("Bar Graph" = "bar")),
+                  choices = c("Bar Graph" = "bar",
+                              "Pie Graph" = "pie")),
       conditionalPanel("input.graphType == 'bar'",
                        # X axis selection for bar chart. Can be any type.
                        selectInput("graphX", "Graph X Axis",
@@ -29,13 +30,21 @@ shinyUI(fluidPage(
                        selectInput("aggregateFunction", "Aggregate Function",
                                    choices = c("Mean" = "mean",
                                                "Count" = "length",
-                                               "Standard Deviation" = "sd")))
+                                               "Standard Deviation" = "sd"))),
+      conditionalPanel("input.graphType == 'pie'",
+                       selectInput("var", "Variable",
+                                   choices = c("Sex" = "sex",
+                                               "Cancer Registry" = "reg",
+                                               "Race" = "race",
+                                               "Stage" = "stage")))
     ),
     
     mainPanel(
       # Google Vis bar chart.
       conditionalPanel("input.graphType == 'bar'",
-                       htmlOutput("googleBarChart"))
+                       htmlOutput("googleBarChart")),
+      conditionalPanel("input.graphType == 'pie'",
+                       htmlOutput("googlePieChart"))
     )
   )
 ))
