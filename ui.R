@@ -10,7 +10,8 @@ shinyUI(fluidPage(
     sidebarPanel(
       selectInput("graphType", "Choose a graph type",
                   choices = c("Bar Graph" = "bar",
-                              "Pie Graph" = "pie")),
+                              "Pie Graph" = "pie",
+                              "Map" = "map")),
       conditionalPanel("input.graphType == 'bar'",
                        # X axis selection for bar chart. Can be any type.
                        selectInput("graphX", "Graph X Axis",
@@ -43,7 +44,19 @@ shinyUI(fluidPage(
                                                "Sex" = "sex",
                                                "Cancer Registry" = "reg",
                                                "Race" = "race",
-                                               "Stage" = "stage")))
+                                               "Stage" = "stage"))),
+      conditionalPanel("input.graphType == 'map'",
+                       selectInput("mapVar", "Variable",
+                                   choices = c("Age of Diagnosis" = "agedx",
+                                               "Year of Birth" = "yrbrth",
+                                               "Sequence Number" = "seqnum",
+                                               "Year of Diagnosis" = "yrdx",
+                                               "Tumor Size" = "cssize",
+                                               "Survival (Months)" = "surv")),
+                       selectInput("mapAggregate", "Aggregate Function",
+                                   choices = c("Mean" = "mean",
+                                               "Count" = "length",
+                                               "Standard Deviation" = "sd")))
     ),
     
     mainPanel(
@@ -51,7 +64,10 @@ shinyUI(fluidPage(
       conditionalPanel("input.graphType == 'bar'",
                        htmlOutput("googleBarChart")),
       conditionalPanel("input.graphType == 'pie'",
-                       htmlOutput("googlePieChart"))
+                       htmlOutput("googlePieChart")),
+      conditionalPanel("input.graphType == 'map'",
+                       htmlOutput("googleMapChart")),
+      width = 8
     )
   )
 ))
