@@ -1,16 +1,16 @@
 library(shiny)
 library(googleVis)
 
-standardChoices = choices = c("Age of Diagnosis" = "agedx",
-                              "Year of Birth" = "yrbrth",
-                              "Sequence Number" = "seqnum",
-                              "Year of Diagnosis" = "yrdx",
-                              "Tumor Size" = "cssize",
-                              "Survival (Months)" = "surv",
-                              "Sex" = "sex",
-                              "Cancer Registry" = "reg",
-                              "Race" = "race",
-                              "Stage" = "stage")
+standardChoices = c("Age of Diagnosis" = "agedx",
+                    "Year of Birth" = "yrbrth",
+                    "Sequence Number" = "seqnum",
+                    "Year of Diagnosis" = "yrdx",
+                    "Tumor Size" = "cssize",
+                    "Survival (Months)" = "surv",
+                    "Sex" = "sex",
+                    "Cancer Registry" = "reg",
+                    "Race" = "race",
+                    "Stage" = "stage")
 
 shinyUI(fluidPage(
   
@@ -52,6 +52,9 @@ shinyUI(fluidPage(
                                    choices = standardChoices),
                        selectInput("motionSize", "Size Variable",
                                    choices = standardChoices),
+                       selectInput("motionTime", "Time Variable",
+                                   choices = c("Year of Diagnosis" = "yrdx",
+                                               "Year of Birth" = "yrbirth")),
                        selectInput("motionX", "Graph X Axis",
                                    choices = standardChoices),
                        selectInput("motionY", "Graph Y Axis",
@@ -82,6 +85,8 @@ shinyUI(fluidPage(
                        htmlOutput("googleBarChart")),
       conditionalPanel("input.graphType == 'pie'",
                        htmlOutput("googlePieChart")),
+      conditionalPanel("input.graphType == 'motion'",
+                       htmlOutput("googleMotionChart")),
       conditionalPanel("input.graphType == 'map'",
                        htmlOutput("googleMapChart")),
       width = 8
