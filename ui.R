@@ -1,6 +1,7 @@
 library(shiny)
 library(googleVis)
 
+# A standard collection of menu choices for use below
 standardChoices = c("Age of Diagnosis" = "agedx",
                     "Year of Birth" = "yrbrth",
                     "Sequence Number" = "seqnum",

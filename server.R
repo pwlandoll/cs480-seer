@@ -43,16 +43,22 @@ shinyServer(function(input, output) {
   })
 
   output$googlePieChart = renderGvis({
+    # Check for strings
     if (is.character(input$pieVar)) {
-     dataCount = count(preprocessedData, vars = input$pieVar)
-     dataCount[,c(input$pieVar)] = as.character(dataCount[,c(input$pieVar)])
-     gvisPieChart(dataCount, labelvar = input$pieVar, numvar = "freq",
-                  options = list(height = 500))
+      # Count instances of the variable
+      dataCount = count(preprocessedData, vars = input$pieVar)
+      # Convert numeric data to strings to make gVis happy
+      dataCount[,c(input$pieVar)] = as.character(dataCount[,c(input$pieVar)])
+      # Manually specifying pie chart height for readability
+      gvisPieChart(dataCount, labelvar = input$pieVar, numvar = "freq",
+                   options = list(height = 500))
     }
   })
 
   output$googleMotionChart = renderGvis({
+    # Check for strings
     if (is.character(input$motionX) && is.character(input$motionY) && is.character(input$motionSize) && is.character(input$motionTime) && is.character(input$motionID)) {
+      # Formula for selecting multiple variables, taking the mean of some
       formula = as.formula(paste("cbind(", input$motionSize, ", ", input$motionX, ", ", input$motionY, ") ~ ", input$motionID, " + ", input$motionTime))
       dataAggregate = aggregate(formula, data = preprocessedData, input$motionAggregateFunction)
       gvisMotionChart(dataAggregate, idvar = input$motionID, timevar = input$motionTime, xvar = input$motionX, yvar = input$motionY, sizevar = input$motionSize,
@@ -61,7 +67,9 @@ shinyServer(function(input, output) {
   })
   
   output$googleMapChart = renderGvis({
+    # Check for strings
     if (is.character(input$mapVar) && is.character(input$mapAggregate)) {
+      # Always aggregate input variable against cancer registry
       formula = as.formula(paste(input$mapVar, " ~ reg"))
       dataAggregate = aggregate(formula, preprocessedData, input$mapAggregate)
       gvisGeoMap(dataAggregate, locationvar = "reg", numvar = input$mapVar,
