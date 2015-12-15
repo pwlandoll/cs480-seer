@@ -43,22 +43,22 @@ shinyServer(function(input, output) {
   })
 
   output$googlePieChart = renderGvis({
-    if (is.character(input$var)) {
-     dataCount = count(preprocessedData, vars = input$var)
-     dataCount[,c(input$var)] = as.character(dataCount[,c(input$var)])
-     gvisPieChart(dataCount, labelvar = input$var, numvar = "freq",
+    if (is.character(input$pieVar)) {
+     dataCount = count(preprocessedData, vars = input$pieVar)
+     dataCount[,c(input$pieVar)] = as.character(dataCount[,c(input$pieVar)])
+     gvisPieChart(dataCount, labelvar = input$pieVar, numvar = "freq",
                   options = list(height = 500))
     }
   })
 
-#   output$googleMotionChart = renderGvis({dataCount[,c(input$var)] = as.character(dataCount[,c(input$var)])
-#     if (is.character(input$motionX) && is.character(input$motionY) && is.character(input$motionSize) && is.character(input$motionTime)) {
-#       formula = as.formula(paste(input$one, " ~ ", input$two))
-#       dataAggregate = aggregate(formula, preprocessedData, input$aggregateFunction)
-#       gvisMotionChart(dataAggregate, idvar = , timevar = , xvar = , yvar = , sizevar = , colorvar = ,
-#                       options = list())
-#     }
-#   })
+  output$googleMotionChart = renderGvis({
+    if (is.character(input$motionX) && is.character(input$motionY) && is.character(input$motionSize) && is.character(input$motionTime) && is.character(input$motionID)) {
+      formula = as.formula(paste(input$ID, " ~ ", input$motionX, " + ", input$motionY))
+      dataAggregate = aggregate(formula, data = preprocessedData, input$motionAggregateFunction)
+      gvisMotionChart(dataAggregate, idvar = input$motionID, timevar = input$motionTime, xvar = input$motionX, yvar = input$motionX, sizevar = input$motionSize,
+                      options = list(height = 500))
+    }
+  })
   
   output$googleMapChart = renderGvis({
     if (is.character(input$mapVar) && is.character(input$mapAggregate)) {

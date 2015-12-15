@@ -1,6 +1,17 @@
 library(shiny)
 library(googleVis)
 
+standardChoices = choices = c("Age of Diagnosis" = "agedx",
+                              "Year of Birth" = "yrbrth",
+                              "Sequence Number" = "seqnum",
+                              "Year of Diagnosis" = "yrdx",
+                              "Tumor Size" = "cssize",
+                              "Survival (Months)" = "surv",
+                              "Sex" = "sex",
+                              "Cancer Registry" = "reg",
+                              "Race" = "race",
+                              "Stage" = "stage")
+
 shinyUI(fluidPage(
   
   # Application title
@@ -11,6 +22,7 @@ shinyUI(fluidPage(
       selectInput("graphType", "Choose a graph type",
                   choices = c("Bar Graph" = "bar",
                               "Pie Graph" = "pie",
+                              "Motion Bubble Chart" = "motion",
                               "Map" = "map")),
       conditionalPanel("input.graphType == 'bar'",
                        # X axis selection for bar chart. Can be any type.
@@ -33,18 +45,23 @@ shinyUI(fluidPage(
                                                "Count" = "length",
                                                "Standard Deviation" = "sd"))),
       conditionalPanel("input.graphType == 'pie'",
-                       selectInput("var", "Variable",
+                       selectInput("pieVar", "Variable",
+                                   choices = standardChoices)),
+      conditionalPanel("input.graphType == 'motion'",
+                       selectInput("motionID", "ID Variable",
+                                   choices = standardChoices),
+                       selectInput("motionSize", "Size Variable",
+                                   choices = standardChoices),
+                       selectInput("motionX", "Graph X Axis",
+                                   choices = standardChoices),
+                       selectInput("motionY", "Graph Y Axis",
                                    choices = c("Age of Diagnosis" = "agedx",
-                                               "Year of Birth" = "yrbrth",
-                                               "Sequence Number" = "seqnum",
-                                               "Year of Diagnosis" = "yrdx",
-                                               "Tumor Size" = "cssize",
-                                               "Survival (Months)" = "surv",
-                                               ###
-                                               "Sex" = "sex",
-                                               "Cancer Registry" = "reg",
-                                               "Race" = "race",
-                                               "Stage" = "stage"))),
+                                               "Tumor Size" = "cssize")),
+                       selectInput("motionAggregateFunction", "Aggregate Function",
+                                   choices = c("Mean" = "mean",
+                                               "Count" = "length",
+                                               "Standard Deviation" = "sd"))),
+
       conditionalPanel("input.graphType == 'map'",
                        selectInput("mapVar", "Variable",
                                    choices = c("Age of Diagnosis" = "agedx",
@@ -58,7 +75,7 @@ shinyUI(fluidPage(
                                                "Count" = "length",
                                                "Standard Deviation" = "sd")))
     ),
-    
+
     mainPanel(
       # Google Vis bar chart.
       conditionalPanel("input.graphType == 'bar'",
