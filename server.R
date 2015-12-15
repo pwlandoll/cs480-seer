@@ -53,7 +53,7 @@ shinyServer(function(input, output) {
 
   output$googleMotionChart = renderGvis({
     if (is.character(input$motionX) && is.character(input$motionY) && is.character(input$motionSize) && is.character(input$motionTime) && is.character(input$motionID)) {
-      formula = as.formula(paste(input$ID, " ~ ", input$motionX, " + ", input$motionY))
+      formula = as.formula(paste("cbind(", input$motionSize, ", ", input$motionX, ", ", input$motionY, ") ~ ", input$motionID, " + ", input$motionTime))
       dataAggregate = aggregate(formula, data = preprocessedData, input$motionAggregateFunction)
       gvisMotionChart(dataAggregate, idvar = input$motionID, timevar = input$motionTime, xvar = input$motionX, yvar = input$motionX, sizevar = input$motionSize,
                       options = list(height = 500))

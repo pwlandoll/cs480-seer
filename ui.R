@@ -54,7 +54,7 @@ shinyUI(fluidPage(
                                    choices = standardChoices),
                        selectInput("motionTime", "Time Variable",
                                    choices = c("Year of Diagnosis" = "yrdx",
-                                               "Year of Birth" = "yrbirth")),
+                                               "Year of Birth" = "yrbrth")),
                        selectInput("motionX", "Graph X Axis",
                                    choices = standardChoices),
                        selectInput("motionY", "Graph Y Axis",
